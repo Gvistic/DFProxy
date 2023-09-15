@@ -1,7 +1,7 @@
 import express from 'express'
 import request from 'request'
 const app = express()
-const port = 3000
+const port = 5001
 
 app.get('/bundles/user/:userId', (req, res) => {
 	const userId = req.params.userId
@@ -15,6 +15,10 @@ app.get('/bundles/user/:userId', (req, res) => {
 		}
 		res.send(body)
 	})
+})
+
+app.get('/', (_req, res) => {
+	res.send('Hello World!')
 })
 
 app.listen(port, () => {
