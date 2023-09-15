@@ -17,7 +17,7 @@ app.get('/bundles/user/:userId', (req, res) => {
     return res.send(cacheContent);
   }
 
-  let url = `https://catalog.roblox.com/v1/users/${userId}/bundles?limit=${limit}&sortOrder=Asc`;
+  let url = `https://catalog.roproxy.com/v1/users/${userId}/bundles?limit=${limit}&sortOrder=Asc`;
   if (cursor) url += `&cursor=${cursor}`;
   
   request(url, (err, response, body) => {
