@@ -32,6 +32,31 @@ app.get('/bundles/user/:userId', (req, res) => {
   });
 });
 
+// create a get for getting outfits give user id
+app.get('/outfits/user/:userId', (req, res) => {
+  const userId = req.params.userId;
+  const { page, itemsPerPage, outfitType } = req.query;
+  const cacheKey = `user:${userId}:outfits:page:${page}:itemsPerPage:${itemsPerPage}:outfitType:${outfitType}`;
+
+  // Check cache
+  const cacheContent = apiCache.get(cacheKey);
+  if (cacheContent) {
+    return res.send(cacheContent);
+  }
+
+  let url = `https://avatar.roblox.com/v1/users/${userId}/outfits?outfitType=${outfitType || 'All'}&page=${page || 1}&itemsPerPage=${itemsPerPage || 25}&isEditable=true`;
+  request(url, (err, _response, body) => {
+    if (err) {
+      return res.status(500).send(err);
+    }
+
+    // Save to cache
+    apiCache.set(cacheKey, body);
+
+    res.send(body);
+  });
+});
+
 app.get('/', (_req, res) => {
   res.send('Hello World!');
 });
